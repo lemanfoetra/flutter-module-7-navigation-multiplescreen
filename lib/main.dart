@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meals/categories_meal_screen.dart';
 import './categories_screen.dart';
 
 void main() => runApp(MyApp());
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
             ),
       ),
       home: Home(),
+      routes: {
+        '/categories-meals': (ctx) => CategoriesMeal()
+      },
     );
   }
 }
