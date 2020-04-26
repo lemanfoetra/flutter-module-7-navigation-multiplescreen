@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dummy_data.dart';
+import 'package:meals/widget/meal_item.dart';
+import '../dummy_data.dart';
 
 class CategoriesMeal extends StatelessWidget {
   @override
@@ -9,14 +10,12 @@ class CategoriesMeal extends StatelessWidget {
     final String id = routeData['id'];
     final String title = routeData['title'];
     final idCategoryMeal = DUMMY_MEALS.where((dataMeal) {
-      
-      for(int i = 0; i < dataMeal.categories.length; i++){
-        if(dataMeal.categories[i] == id){
+      for (int i = 0; i < dataMeal.categories.length; i++) {
+        if (dataMeal.categories[i] == id) {
           return true;
         }
       }
       return false;
-      //return dataMeal.categories.contains(id); // contains() juba berfungsi untuk memriksa sama atau tidaknya
     }).toList();
 
     return Scaffold(
@@ -26,7 +25,13 @@ class CategoriesMeal extends StatelessWidget {
       body: ListView.builder(
         itemCount: idCategoryMeal.length,
         itemBuilder: (ctx, index) {
-          return Text(idCategoryMeal[index].title);
+          return MealItem(
+            title: idCategoryMeal[index].title,
+            imgUrl: idCategoryMeal[index].imageUrl,
+            duration: idCategoryMeal[index].duration,
+            complexity: idCategoryMeal[index].complexity,
+            affordability: idCategoryMeal[index].affordability,
+          );
         },
       ),
     );
