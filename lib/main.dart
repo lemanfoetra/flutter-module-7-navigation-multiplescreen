@@ -37,6 +37,21 @@ class MyApp extends StatelessWidget {
         CategoriesMeal.routeName: (ctx) => CategoriesMeal(),
         MealDetailSceen.routeName : (ctx) => MealDetailSceen(),
       },
+
+      
+      onGenerateRoute: (setting){
+        // if(setting.name == 'the route name'){
+        //   return a widget;
+        // }
+      },
+
+
+      /*
+        Callback ini biasanya digunakan untuk penanganan kesalahan. Misalnya, panggilan balik ini mungkin selalu menghasilkan halaman "tidak ditemukan" yang menjelaskan rute yang tidak ditemukan. Atau seperti halaman 404 kalo web
+      */
+      onUnknownRoute: (setting){
+        return MaterialPageRoute(builder: (ctx) => Home());
+      },
     );
   }
 }
