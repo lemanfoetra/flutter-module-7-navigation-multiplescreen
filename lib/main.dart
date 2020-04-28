@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',   // untuk default home route
       routes: {
         '/': (ctx)=> Home(),
-        CategoryItem.routeName: (ctx) => CategoriesMeal(),
+        CategoriesMeal.routeName: (ctx) => CategoriesMeal(),
         MealDetailSceen.routeName : (ctx) => MealDetailSceen(),
       },
     );
