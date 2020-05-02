@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meals/screen/FavoritesScreen.dart';
+import './FavoritesScreen.dart';
 import './categories_screen.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -8,40 +8,46 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
+  final List<Map<String, Object>> _listScreen = [
+    {
+      'page': CategoriesScreen(),
+      'title': 'Categories',
+    },
+    {
+      'page': FavoritesScreen(),
+      'title': 'Your Favorites',
+    },
+  ];
+
+  int _indexScreen = 0;
+
+  void onSelect(int index) {
+    setState(() {
+      _indexScreen = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (ctx, innerBoxIsScrollable) {
-            return <Widget>[
-              SliverAppBar(
-                title: Text('Meals'),
-                pinned: true,
-                floating: true,
-                bottom: TabBar(
-                  tabs: <Widget>[
-                    Tab(
-                      icon: Icon(Icons.category),
-                      text: 'Categories',
-                    ),
-                    Tab(
-                      icon: Icon(Icons.favorite),
-                      text: 'Favorites',
-                    ),
-                  ],
-                ),
-              )
-            ];
-          },
-          body: TabBarView(
-            children: <Widget>[
-              CategoriesScreen(),
-              FavoritesScreen()
-            ],
-          ),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_listScreen[_indexScreen]['title']),
+      ),
+      body: _listScreen[_indexScreen]['page'],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (indexTab) {
+          return onSelect(indexTab);
+        },
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
+        currentIndex: _indexScreen,
+        backgroundColor: Theme.of(context).primaryColor,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.category), title: Text('Category')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), title: Text('Favorites')),
+        ],
       ),
     );
   }
