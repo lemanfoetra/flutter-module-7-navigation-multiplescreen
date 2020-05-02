@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:meals/screen/meal_detail_screen.dart';
+import './screen/filters_screen.dart';
+import './screen/meal_detail_screen.dart';
 import './screen/tabs_screen.dart';
 import './screen/categories_meal_screen.dart';
-import './widget/category_item.dart';
 import './screen/categories_screen.dart';
 
 void main() => runApp(MyApp());
@@ -32,39 +32,26 @@ class MyApp extends StatelessWidget {
             ),
       ),
       //home: Home(),
-      initialRoute: '/',   // untuk default home route
+      initialRoute: '/', // untuk default home route
       routes: {
-        '/': (ctx)=> TabsScreen(),
+        '/': (ctx) => TabsScreen(),
         CategoriesMeal.routeName: (ctx) => CategoriesMeal(),
-        MealDetailSceen.routeName : (ctx) => MealDetailSceen(),
+        MealDetailSceen.routeName: (ctx) => MealDetailSceen(),
+        FiltersScreen.routeName: (ctx) => FiltersScreen(),
       },
 
-      
-      onGenerateRoute: (setting){
+      onGenerateRoute: (setting) {
         // if(setting.name == 'the route name'){
         //   return a widget;
         // }
       },
 
-
       /*
         Callback ini biasanya digunakan untuk penanganan kesalahan. Misalnya, panggilan balik ini mungkin selalu menghasilkan halaman "tidak ditemukan" yang menjelaskan rute yang tidak ditemukan. Atau seperti halaman 404 kalo web
       */
-      onUnknownRoute: (setting){
-        return MaterialPageRoute(builder: (ctx) => Home());
+      onUnknownRoute: (setting) {
+        return MaterialPageRoute(builder: (ctx) => CategoriesScreen());
       },
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('DeliMeal'),
-      ),
-      body: CategoriesScreen(),
     );
   }
 }

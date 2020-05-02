@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import '../screen/filters_screen.dart';
 
 class MyDrawer extends StatelessWidget {
-
-  
-  Widget listDrewer(String title, IconData icon) {
+  Widget listDrewer(String title, IconData icon, Function tapHandler) {
     return Column(
       children: <Widget>[
         ListTile(
@@ -12,7 +11,9 @@ class MyDrawer extends StatelessWidget {
             title,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
           ),
-          onTap: () {},
+          onTap: () {
+            return tapHandler();
+          },
         ),
         Padding(
           padding: EdgeInsets.only(right: 10, left: 15),
@@ -46,8 +47,17 @@ class MyDrawer extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          listDrewer('Meal', Icons.fastfood),
-          listDrewer('Filters', Icons.settings),
+          listDrewer(
+            'Meal',
+            Icons.fastfood,
+            () => Navigator.of(context).pushReplacementNamed('/')
+            ,
+          ),
+          listDrewer(
+            'Filters',
+            Icons.settings,
+            () => Navigator.of(context).pushReplacementNamed(FiltersScreen.routeName),
+          ),
         ],
       ),
     );
