@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meals/widget/my_drawer.dart';
 import './FavoritesScreen.dart';
 import './categories_screen.dart';
 
@@ -7,7 +8,9 @@ class TabsScreen extends StatefulWidget {
   _TabsScreenState createState() => _TabsScreenState();
 }
 
+
 class _TabsScreenState extends State<TabsScreen> {
+
   final List<Map<String, Object>> _listScreen = [
     {
       'page': CategoriesScreen(),
@@ -44,11 +47,16 @@ class _TabsScreenState extends State<TabsScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.category), title: Text('Category')),
+            icon: Icon(Icons.category),
+            title: Text('Category'),
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), title: Text('Favorites')),
+            icon: Icon(Icons.favorite),
+            title: Text('Favorites'),
+          ),
         ],
       ),
+      drawer: MyDrawer(),
     );
   }
 }
