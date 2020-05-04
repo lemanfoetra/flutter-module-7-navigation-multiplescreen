@@ -9,6 +9,7 @@ class MealItem extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
+  final Function deleteMeal;
 
   MealItem({
     @required this.id,
@@ -17,6 +18,7 @@ class MealItem extends StatelessWidget {
     @required this.duration,
     @required this.complexity,
     @required this.affordability,
+    @required this.deleteMeal,
   });
 
   String get complex {
@@ -38,18 +40,18 @@ class MealItem extends StatelessWidget {
       return "Luxurious";
     } else if (affordability == Affordability.Pricey) {
       return "Pricey";
-    } else{
+    } else {
       return "unknow";
     }
   }
 
-
-
   void selectMeal(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(MealDetailSceen.routeName, arguments: id );
+    Navigator.of(ctx)
+        .pushNamed(MealDetailSceen.routeName, arguments: id)
+        .then((mealId) {
+      deleteMeal(mealId);
+    });
   }
-
-
 
   @override
   Widget build(BuildContext context) {

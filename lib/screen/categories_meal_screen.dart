@@ -1,46 +1,77 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:meals/widget/meal_item.dart';
+import '../widget/meal_item.dart';
 import '../dummy_data.dart';
+import '../models/meal.dart';
 
-class CategoriesMeal extends StatelessWidget {
-
+class CategoriesMeal extends StatefulWidget {
   static const routeName = "/categories-meal-screen";
 
   @override
-  Widget build(BuildContext context) {
+  _CategoriesMealState createState() => _CategoriesMealState();
+}
 
-    var routeData =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
+class _CategoriesMealState extends State<CategoriesMeal> {
+  List<Meal> displayingMeal;
+  String titleMeal;
+  bool _initLoadedData = true;
+  
 
-    final String id = routeData['id'];
-    final String title = routeData['title'];
-    
-    final idCategoryMeal = DUMMY_MEALS.where((dataMeal) {
-      for (int i = 0; i < dataMeal.categories.length; i++) {
-        if (dataMeal.categories[i] == id) {
-          return true;
+
+  // funtion ini dipanggil ketika dependencies berubah
+  // kenapa script ini dimasukan kesini, karena untuk mengambil passing data membutuhkan "context" dan itu hanya bisa di dapatkan dari funtion cycle nya flutter
+  @override
+  void didChangeDependencies() {
+
+    if (_initLoadedData) {
+
+      var routeData = ModalRoute.of(context).settings.arguments as Map<String, String>;
+      final String id = routeData['id'];
+      titleMeal = routeData['title'];
+      displayingMeal = DUMMY_MEALS.where((dataMeal) {
+        for (int i = 0; i < dataMeal.categories.length; i++) {
+          if (dataMeal.categories[i] == id) {
+            return true;
+          }
         }
-      }
-      return false;
-    }).toList();
+        return false;
+      }).toList();
 
+      _initLoadedData = false;
+    }
+    super.didChangeDependencies();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(titleMeal),
       ),
       body: ListView.builder(
-        itemCount: idCategoryMeal.length,
+        itemCount: displayingMeal.length,
         itemBuilder: (ctx, index) {
           return MealItem(
-            id : idCategoryMeal[index].id,
-            title: idCategoryMeal[index].title,
-            imgUrl: idCategoryMeal[index].imageUrl,
-            duration: idCategoryMeal[index].duration,
-            complexity: idCategoryMeal[index].complexity,
-            affordability: idCategoryMeal[index].affordability,
+            id: displayingMeal[index].id,
+            title: displayingMeal[index].title,
+            imgUrl: displayingMeal[index].imageUrl,
+            duration: displayingMeal[index].duration,
+            complexity: displayingMeal[index].complexity,
+            affordability: displayingMeal[index].affordability,
+            deleteMeal: _deleteMeal,
           );
         },
       ),
     );
+  }
+
+  void _deleteMeal(String mealId) {
+    setState(() {
+      displayingMeal.removeWhere((data) {
+        return data.id == mealId;
+      });
+    });
   }
 }

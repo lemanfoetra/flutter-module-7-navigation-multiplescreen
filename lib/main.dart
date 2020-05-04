@@ -31,7 +31,6 @@ class MyApp extends StatelessWidget {
               ),
             ),
       ),
-      //home: Home(),
       initialRoute: '/', // untuk default home route
       routes: {
         '/': (ctx) => TabsScreen(),

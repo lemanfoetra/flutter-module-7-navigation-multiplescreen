@@ -92,28 +92,14 @@ class MealDetailSceen extends StatelessWidget {
               style: Theme.of(context).textTheme.title,
             ),
           ),
-
           ...listStep,
-
-          // ...dataMeal.steps.map((data) {
-          //   return Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Container(
-          //         padding: EdgeInsets.only(left: 20, right: 20),
-          //         child: Text(
-          //           data,
-          //           style: TextStyle(fontSize: 18),
-          //         ),
-          //       ),
-          //       Padding(
-          //         padding: EdgeInsets.only(left: 20, right: 20),
-          //         child: Divider(),
-          //       )
-          //     ],
-          //   );
-          // }).toList(),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          return Navigator.of(context).pop(mealId);
+        },
+        child: Icon(Icons.delete),
       ),
     );
   }
