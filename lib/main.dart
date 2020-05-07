@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meals/dummy_data.dart';
+import 'package:meals/models/meal.dart';
 import './screen/filters_screen.dart';
 import './screen/meal_detail_screen.dart';
 import './screen/tabs_screen.dart';
@@ -7,7 +9,60 @@ import './screen/categories_screen.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  static Map<String, bool> filterData = {
+    'isGlutenFree': false,
+    'isVegan': false,
+    'isVegetarian': false,
+    'isLactoseFree': false
+  };
+
+
+  List<Meal> dataMeals = DUMMY_MEALS;
+      
+  // function untuk memfilter jenis meal
+  void setFilter(Map<String, bool> setdata){
+    setState(() {
+      filterData['isGlutenFree'] = setdata['isGlutenFree'];
+      filterData['isVegan'] = setdata['isVegan'];
+      filterData['isVegetarian'] = setdata['isVegetarian'];
+      filterData['isLactoseFree'] = setdata['isLactoseFree'];
+    });
+    dataMeals = DUMMY_MEALS
+      .where(
+        (dataMeal) {
+          if(filterData['isGlutenFree']){
+            if(!dataMeal.isGlutenFree){
+              return false;
+            }
+          }
+          if(filterData['isVegan']){
+            if(!dataMeal.isVegan){
+              return false;
+            }
+          }
+          if(filterData['isVegetarian']){
+            if(!dataMeal.isVegetarian){
+              return false;
+            }
+          }
+          if(filterData['isLactoseFree']){
+            if(!dataMeal.isLactoseFree){
+              return false;
+            }
+          }
+          return true;
+        },
+      ).toList();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,9 +89,9 @@ class MyApp extends StatelessWidget {
       initialRoute: '/', // untuk default home route
       routes: {
         '/': (ctx) => TabsScreen(),
-        CategoriesMeal.routeName: (ctx) => CategoriesMeal(),
+        CategoriesMeal.routeName: (ctx) => CategoriesMeal(dataMeals),
         MealDetailSceen.routeName: (ctx) => MealDetailSceen(),
-        FiltersScreen.routeName: (ctx) => FiltersScreen(),
+        FiltersScreen.routeName: (ctx) => FiltersScreen( filterData ,setFilter),
       },
 
       onGenerateRoute: (setting) {
