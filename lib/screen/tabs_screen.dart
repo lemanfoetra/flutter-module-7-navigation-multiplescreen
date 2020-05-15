@@ -1,30 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:meals/dummy_data.dart';
+import 'package:meals/models/meal.dart';
 import 'package:meals/widget/my_drawer.dart';
 import './FavoritesScreen.dart';
 import './categories_screen.dart';
 
 class TabsScreen extends StatefulWidget {
-
   static const routeName = '/';
+  final List<String> listFavoriteMeal;
+
+  TabsScreen(this.listFavoriteMeal);
 
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
 
-
 class _TabsScreenState extends State<TabsScreen> {
-
-  final List<Map<String, Object>> _listScreen = [
-    {
-      'page': CategoriesScreen(),
-      'title': 'Categories',
-    },
-    {
-      'page': FavoritesScreen(),
-      'title': 'Your Favorites',
-    },
-  ];
-
+  List<Meal> listFavoriteMeal = [];
+  List<Map<String, Object>> _listScreen = [];
   int _indexScreen = 0;
 
   void onSelect(int index) {
@@ -32,6 +25,39 @@ class _TabsScreenState extends State<TabsScreen> {
       _indexScreen = index;
     });
   }
+
+
+
+
+  @override
+  void initState() {
+    setState(() {
+      _listScreen = [
+        {
+          'page': CategoriesScreen(),
+          'title': 'Categories',
+        },
+        {
+          'page': FavoritesScreen(listFavoriteMeal),
+          'title': 'Your Favorites',
+        },
+      ];
+
+      for (int i = 0; i < widget.listFavoriteMeal.length; i++) {
+        List<Meal> meal = DUMMY_MEALS
+            .where((data) => data.id == widget.listFavoriteMeal[i])
+            .toList();
+        if (meal.length > 0) {
+          for (int j = 0; j < meal.length; j++) {
+            listFavoriteMeal.add(meal[j]);
+          }
+        }
+      }
+    });
+    super.initState();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {

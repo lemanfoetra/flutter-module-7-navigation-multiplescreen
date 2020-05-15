@@ -15,7 +15,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   static Map<String, bool> filterData = {
     'isGlutenFree': false,
     'isVegan': false,
@@ -23,45 +22,52 @@ class _MyAppState extends State<MyApp> {
     'isLactoseFree': false
   };
 
-
   List<Meal> dataMeals = DUMMY_MEALS;
-      
+  List<String> listMealFavorite = [];
+
   // function untuk memfilter jenis meal
-  void setFilter(Map<String, bool> setdata){
+  void setFilter(Map<String, bool> setdata) {
     setState(() {
       filterData['isGlutenFree'] = setdata['isGlutenFree'];
       filterData['isVegan'] = setdata['isVegan'];
       filterData['isVegetarian'] = setdata['isVegetarian'];
       filterData['isLactoseFree'] = setdata['isLactoseFree'];
     });
-    dataMeals = DUMMY_MEALS
-      .where(
-        (dataMeal) {
-          if(filterData['isGlutenFree']){
-            if(!dataMeal.isGlutenFree){
-              return false;
-            }
+    dataMeals = DUMMY_MEALS.where(
+      (dataMeal) {
+        if (filterData['isGlutenFree']) {
+          if (!dataMeal.isGlutenFree) {
+            return false;
           }
-          if(filterData['isVegan']){
-            if(!dataMeal.isVegan){
-              return false;
-            }
+        }
+        if (filterData['isVegan']) {
+          if (!dataMeal.isVegan) {
+            return false;
           }
-          if(filterData['isVegetarian']){
-            if(!dataMeal.isVegetarian){
-              return false;
-            }
+        }
+        if (filterData['isVegetarian']) {
+          if (!dataMeal.isVegetarian) {
+            return false;
           }
-          if(filterData['isLactoseFree']){
-            if(!dataMeal.isLactoseFree){
-              return false;
-            }
+        }
+        if (filterData['isLactoseFree']) {
+          if (!dataMeal.isLactoseFree) {
+            return false;
           }
-          return true;
-        },
-      ).toList();
+        }
+        return true;
+      },
+    ).toList();
   }
 
+  void setIdMealFavorite(String idMeal) {
+    var count = listMealFavorite.where((data) => data == idMeal).toList();
+    if (count.length > 0) {
+      listMealFavorite.removeWhere((data) => data == idMeal);
+    } else {
+      listMealFavorite.add(idMeal);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,10 +94,10 @@ class _MyAppState extends State<MyApp> {
       ),
       initialRoute: '/', // untuk default home route
       routes: {
-        '/': (ctx) => TabsScreen(),
+        '/': (ctx) => TabsScreen(listMealFavorite),
         CategoriesMeal.routeName: (ctx) => CategoriesMeal(dataMeals),
-        MealDetailSceen.routeName: (ctx) => MealDetailSceen(),
-        FiltersScreen.routeName: (ctx) => FiltersScreen( filterData ,setFilter),
+        MealDetailSceen.routeName: (ctx) => MealDetailSceen(setIdMealFavorite, listMealFavorite),
+        FiltersScreen.routeName: (ctx) => FiltersScreen(filterData, setFilter),
       },
 
       onGenerateRoute: (setting) {

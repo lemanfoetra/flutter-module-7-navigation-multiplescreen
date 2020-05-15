@@ -1,11 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:meals/dummy_data.dart';
 
-class MealDetailSceen extends StatelessWidget {
+class MealDetailSceen extends StatefulWidget {
+
   static const routeName = '/meal-detail';
+  final Function setIdMealFavorite;
+  final List<String> listIdMealFavorite;
+
+  MealDetailSceen(this.setIdMealFavorite, this.listIdMealFavorite);
+
+  @override
+  _MealDetailSceenState createState() => _MealDetailSceenState();
+}
+
+
+
+
+class _MealDetailSceenState extends State<MealDetailSceen> {
+
+
+  bool isMealFavorite(String idMeal) {
+    var count = widget.listIdMealFavorite.where((id) => id == idMeal).toList();
+    if (count.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
     final mealId = ModalRoute.of(context).settings.arguments as String;
 
     var dataMeal = DUMMY_MEALS.firstWhere((data) {
@@ -33,6 +58,7 @@ class MealDetailSceen extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          // GAMBAR
           Container(
             height: 300,
             width: double.infinity,
@@ -55,9 +81,31 @@ class MealDetailSceen extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                // widget Mengubah meal menjadi favorite
+                Positioned(
+                  top: 20,
+                  right: 20,
+                  child: Container(
+                    child: InkWell(
+                      child: Icon(
+                        isMealFavorite(mealId) ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.red,
+                        size: 40,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          isMealFavorite(mealId);
+                        });
+                        widget.setIdMealFavorite(mealId);
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
-          ),
+          ), // END GAMBAR
+
           Container(
             padding: EdgeInsets.only(bottom: 20, top: 20),
             child: Text(
@@ -97,7 +145,7 @@ class MealDetailSceen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          return Navigator.of(context).pop(mealId);
+          return null; //Navigator.of(context).pop(mealId);
         },
         child: Icon(Icons.delete),
       ),
